@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cart %}
+
+{% block xyz %}
+
+home
+{% endblock xyz %}
+
+{% block content %}
+
+
+<style>
+  .category {
+    
+    color: white;
+    text-decoration : none !important;
+  }
+ 
+</style>  
+
+<div class="container my-3">
+  <div class="row text-bg-secondary text-center">
+    {% for cate_var in category_obj %}
+      <div class="col pt-3">
+        <a href="?category_id={{cate_var.id}}" class="category">
+            <img src="{{cate_var.Category_image.url}}" height=72 width= alt={{cate_var.Category_name }}>
+            <p>{{cate_var.Category_name}}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  
+</div>
+
+{% comment %} this is for carsousel {% endcomment %}
+
+<div class="container my-3">
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'images/AutoFurnish-banner_cbc_1.webp' %}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'images/mat.webp' %}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'images/cover.webp' %}" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+</div>
+
+
+{% comment %} this is for product {% endcomment %}
+
+<div class="container">
+  <div class="row">
+      {% for pro in product_obj  %}
+          <div class ="col  text-center">
+            <div class="card" style="width: 18rem; margin-top: 20px;">
+              <img src="{{pro.Product_image.url}}" class="card-img-top" alt="{{pro.product_image.url}}" width=150 height=150>
+              <div class="card-body">
+                <h5 class="card-title">{{pro.Product_name}}</h5>
+                <h5 class="card-title">RS.{{pro.Product_price}}</h5>
+                <p class="card-text">{{pro.Product_desc}}</p>
+                {% comment %} <a href="#" class="btn btn-primary">Add to Cart</a> {% endcomment %}
+                <div class="card-footer text-body-secondary">
+                  {% if pro|isexistincart:request.session.cart %}
+
+                    <div class="row">
+                      <div class="col-3">
+                        <form action="#{{pro.id}}" method ="post">
+                            {% csrf_token %}
+                            <input type="text" value={{pro.id}} name="cartid"  hidden>
+                            <input type="text" value={{pro.id}} name="remove"  hidden>
+                            <input type="submit" class="btn btn-primary" value="-">
+      
+                        </form>
+                      </div>
+                      <div class="col">
+                        <h3>{{pro|cartquantity:request.session.cart}}</h3>
+                      </div>
+                      <div class="col-3">
+                        <form action="#{{pro.id}}" method ="post">
+                              {% csrf_token %}
+                              <input type="text" value={{pro.id}} name="cartid"  hidden>
+                              <input type="submit" class="btn btn-primary" value="+">
+      
+                        </form>
+                      </div>
+                    </div>
+
+                  {% else %}
+                  <form action="#{{pro.id}}" method ="post">
+                    {% csrf_token %}
+                    <input type="text" value={{pro.id}} name="cartid"  hidden>
+                    <input type="submit" class="btn btn-primary" value="Add to Cart">
+
+                  </form>
+                  {% endif %}
+                  
+                </div>
+              </div>
+              
+              
+            </div>
+          </div>
+          
+          
+
+
+
+
+            
+
+      
+      
+      {% endfor %}
+
+  </div><hr style="color:white;">
+  <div style="color:white;">
+  <h1>BUY AUTO ACCESSORIES ONLINE</h1>
+  <p style="font-size:20px">As the largest online seller of automobile accessories in India, we at Autofurnish a subsidiary of Golden Mace Private Limited are engaged in manufacturing, trading, exporting and supplying a qualitative array of products. Autofurnish is a one-stop shop for all car needs, with its exceptional quality and range of products, each designed to attend to customer needs. Being a renowned manufacturer and wholesaler dealing in car accessories and more, our repository boasts diverse types of car and bike accessories, primarily auto accessories for all cars and bikes at wholesale rates. Having carved a niche for itself by providing excellent quality products that attend to all automobile accessory needs, Autofurnish has spread its wings far and wide across the country today.
+  
+  Our mission stands to provide unique and innovative automotive products that garner customer delight and satisfaction.<br> We consistently attribute the same to our wide range of products that are designed and engineered using the best technology and offered at affordable prices. Despite the reasonable price range of our range of products, Autofurnishâ€™s mark of quality remains to be uncompromisable.
+  
+  Our vision is an extension of our mission and the transpiration of our core values that lay utmost emphasis and regard on quality, affordability, diversity of products, and the maintenance of relationships with every party involved. <br>To reiterate the same, our vision is to become the most admired and reliable brand by our customers, employees, and business partners for the experience and value they receive from us and our products, time and time again. At Autofurnish, we regard money to be a secondary asset in comparison to the relationships that our business harbours and builds with everyone involved. This not only includes the customers but also our team members, partners and contractors we associate ourselves with, throughout our processes.
+  
+  Here at Autofurnish, we regard our incomparable quality as our prime selling value, our USP. <br>As a renowned manufacturer of car body covers, seat covers, face masks, steering covers, bike body covers and many other accessories, we believe we gain the upper hand by providing the best fitment and high-quality products that attend to every need of our customers. We also possess a niche in premium products and customization. This allows us the flexibility of making the body and seat cover of any car or bike whether it is a sports or vintage or newly launched vehicle.
+  
+  In a deliberate attempt to meet the expectations of auto enthusiasts across the country, Autofurnish stocks 50,000 auto accessories at a time. The wide range of top car accessories offered by us comprises car seat covers, car body covers, car safety devices, car interior accessories, car exterior accessories, trendy car lights, bike accessories, riding gears, and many more.</p>
+  
+  
+  <h1>Who We Are?</h1>
+  <p style="font-size:20px">
+  AutoFurnish, since its inception, has been focused on delivering the best and most high-quality car accessories to Indian automobile buyers at affordable prices. The company started its operations in 2012 as the first online auto accessories store in India. Over the years, with consistent efforts and hard work, it has now become a household name and set a benchmark in the auto industry. The founders and team at AutoFurnish are well-aware of the fact that a car/two-wheeler is today a crucial mode of transportation for the masses in the country. Private vehicles have become an important everyday part of many lives in this age, leading to the auto market getting bigger and bigger with each passing day. As a way to attend to this very market, we leave no stone unturned to bring futuristic and latest bike and car accessories to choose from. Our collection at AutoFurnish offers a set of premium products to make sure you and your vehicle are safe and maintained round the clock, in all types of conditions.
+  </p>
+  
+  <h1>Our Vision</h1>
+  <p style="font-size:20px">
+  At Autofurnish, we are committed to offering technology-driven auto accessories, each designed and engineered to bring an optimum amount of comfort, convenience and luxury that serve the customers in the best way possible.<br> Our team consistently keeps an eye on new trends to foster improvements in our products, in order to give the highest amount of satisfaction to the customers with a futuristic range of new car accessories. With the widest array of best car accessories including premium  car seat covers, car safety devices, car care accessories, car styling accessories, followed by premium bike accessories , we are consistently dedicated to leaving no stone unturned to meet all the expectations of our customers.
+  
+  While our legacy in the market and the kind of customer relationships we build give us an upper hand, in the end, we pride ourselves on these top core features that are associated with our range of products.<br>
+  
+  High quality auto accessories at best prices100% customer satisfactionHassle-free online shopping experience
+  </p>
+  
+  <h1>Why to Buy Car Accessories Online?</h1>
+  <p style="font-size:20px">
+  The relationship you share with your car is second to none and is so sacred that many people fail to understand it. But fortunately, we understand the relationship you share with your car. After all, that car is not just another asset, itâ€™s your everyday companion. Flaunting your car with interior and exterior modifications that make it appear more attractive enables you to make sure that your vehicle becomes an extension of your unique personality. Often, the options from a retail shop or any accessories shop are limited and are usually the same as what is available locally, in turn, becoming a common accessory.
+  
+  On the other hand, online shopping gives you an edge as far as accessories are concerned. You can not only purchase products that can go on to become trendsetters but also you can access a whole new range of options to choose from. You can choose from the huge variety and diversity of products and also get access to new car accessories which may not easily be available nearby. Best car accessories with utmost quality and the convenience of delivery at the doorstep make the whole process easier, smoother, and smarter.
+  </p>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />  {% endcomment %}
+
+    <title>
+      {% block xyz %}
+      {% endblock %}
+    </title>
+    
+       <style>
+        body {
+          background-image: url("{% static 'images/background.jpg' %}");
+          background-size: cover; /* Scale the image to cover the entire screen */
+          background-position: center; /* Center the image */
+      }
+       </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-warning">
+      <div class="container-fluid">
+        {% if request.session.name %}
+          <a class="navbar-brand" href="#">{{ request.session.name }}</a>
+        {% else %}
+          <a class="navbar-brand" href="#">E-Shop</a>
+        {% endif %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex mx-2" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a href="{% url 'cart' %}" type="button" class="btn btn-primary position-relative ms-3">
+            <i class="bi bi-cart"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ request.session.cart|length }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </a>
+          {% if request.session.name %}
+            <a href="{% url 'logout' %}" type="button" class="btn btn-success mx-2">Logout</a>
+            <a href="{% url 'order' %}" type="button" class="btn btn-success">Order</a>
+          {% else %}
+            <button type="button" class="btn btn-success mx-2" data-bs-toggle="modal" data-bs-target="#login">Login</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#signup">Sign up</button>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+    {% comment %}model for signup{% endcomment %}
+    <!-- Modal -->
+    <div class="modal fade" id="signup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Registration</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3" action="{% url 'signup' %}" method="post">
+              {% csrf_token %}
+              <div class="col-md-6">
+                <label for="fname" class="form-label">First Name</label>
+                <input type="text" name="fname" class="form-control" id="fname" />
+              </div>
+              <div class="col-md-6">
+                <label for="lname" class="form-label">Last Name</label>
+                <input type="text" name="lname" class="form-control" id="lname" />
+              </div>
+              <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="inputEmail4" />
+              </div>
+              <div class="col-md-6">
+                <label for="inputPassword4" class="form-label">Password</label>
+                <input type="password" name="pwd" class="form-control" id="inputPassword4" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="mobile" class="form-label">Mobile</label>
+                <input type="number" name="mobile" class="form-control" id="mobile" />
+              </div>
+              <div class="col-md-6">
+                <label for="inputState" class="form-label">Gender</label>
+                <br />
+                <input type="radio" name="gender" value="Male" />Male
+                <br />
+                <input type="radio" name="gender" value="Female" />Female
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Signup</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% comment %}model for login{% endcomment %}
+    <!-- Modal -->
+    <div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'login' %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Email</label>
+                <input type="text" class="form-control" name="emailid" id="formGroupExampleInput" placeholder="enter your email..." />
+              </div>
+              <div class="mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="formGroupExampleInput2" placeholder="Enter your password" />
+              </div>
+              
+                
+                
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Login</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // JavaScript to display alert if login attempt fails
+      {% if error_message %}
+          alert("{{ error_message }}");
+      {% endif %}
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+</html>

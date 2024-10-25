@@ -1,0 +1,7 @@
+/* Define a class for the body with the background image */
+
+body {
+    background-image: url("{% static 'images/background.jpg' %}");
+    background-size: cover; /* Scale the image to cover the entire screen */
+    background-position: center; /* Center the image */
+}
